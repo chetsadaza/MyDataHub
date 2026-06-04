@@ -4,8 +4,9 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PROJECTS } from "@/lib/constants";
+import { portfolioStorage } from "@/lib/portfolioStorage";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import SectionTitle from "@/components/ui/SectionTitle";
 import Card from "@/components/ui/Card";
@@ -14,13 +15,18 @@ import styles from "@/styles/projects.module.css";
 const CATEGORIES = ["All", "Full-Stack", "Frontend", "Backend"];
 
 export default function ProjectsSection() {
+  const [projects, setProjects] = useState(PROJECTS);
   const [activeFilter, setActiveFilter] = useState("All");
   const [ref, isVisible] = useScrollAnimation({ threshold: 0.05 });
 
+  useEffect(() => {
+    setProjects(portfolioStorage.getProjects());
+  }, []);
+
   const filteredProjects =
     activeFilter === "All"
-      ? PROJECTS
-      : PROJECTS.filter((p) => p.category === activeFilter);
+      ? projects
+      : projects.filter((p) => p.category === activeFilter);
 
   return (
     <section className="section" id="projects">

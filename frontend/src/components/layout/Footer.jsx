@@ -4,7 +4,9 @@
 
 "use client";
 
+import { useState, useEffect } from "react";
 import { PERSONAL_INFO, SOCIAL_LINKS } from "@/lib/constants";
+import { portfolioStorage } from "@/lib/portfolioStorage";
 import styles from "@/styles/footer.module.css";
 
 // Simple SVG icons for social links
@@ -31,6 +33,12 @@ const SocialIcon = ({ type }) => {
 };
 
 export default function Footer() {
+  const [profile, setProfile] = useState(PERSONAL_INFO);
+
+  useEffect(() => {
+    setProfile(portfolioStorage.getProfile());
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -46,9 +54,9 @@ export default function Footer() {
           <div className={styles.brand}>
             <a href="#hero" className={styles.logo} onClick={(e) => { e.preventDefault(); scrollToTop(); }}>
               <span className={styles.logoIcon}>{"</>"}</span>
-              <span className={styles.logoText}>{PERSONAL_INFO.name}</span>
+              <span className={styles.logoText}>{profile.name}</span>
             </a>
-            <p className={styles.tagline}>{PERSONAL_INFO.subtitle}</p>
+            <p className={styles.tagline}>{profile.subtitle}</p>
           </div>
 
           {/* Social Links */}
@@ -82,7 +90,7 @@ export default function Footer() {
         {/* Bottom Section */}
         <div className={styles.bottom}>
           <p className={styles.copyright}>
-            © {currentYear} {PERSONAL_INFO.name}. All rights reserved.
+            © {currentYear} {profile.name}. All rights reserved.
           </p>
           <p className={styles.credit}>
             Built with{" "}

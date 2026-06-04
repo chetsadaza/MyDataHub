@@ -4,7 +4,9 @@
 
 "use client";
 
+import { useState, useEffect } from "react";
 import { SKILLS } from "@/lib/constants";
+import { portfolioStorage } from "@/lib/portfolioStorage";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import SectionTitle from "@/components/ui/SectionTitle";
 import Card from "@/components/ui/Card";
@@ -12,7 +14,12 @@ import SkillBadge from "@/components/ui/SkillBadge";
 import styles from "@/styles/skills.module.css";
 
 export default function SkillsSection() {
+  const [skills, setSkills] = useState(SKILLS);
   const [ref, isVisible] = useScrollAnimation({ threshold: 0.05 });
+
+  useEffect(() => {
+    setSkills(portfolioStorage.getSkills());
+  }, []);
 
   return (
     <section className={`section ${styles.skillsSection}`} id="skills">
@@ -26,7 +33,7 @@ export default function SkillsSection() {
           ref={ref}
           className={`${styles.grid} ${isVisible ? styles.visible : ""}`}
         >
-          {SKILLS.map((category, catIndex) => (
+          {skills.map((category, catIndex) => (
             <Card
               key={category.category}
               variant="gradient"

@@ -1,7 +1,5 @@
 import "./globals.css";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import CursorGlow from "@/components/ui/CursorGlow";
+import ClientLayoutWrapper from "@/components/layout/ClientLayoutWrapper";
 
 export const viewport = {
   width: "device-width",
@@ -52,10 +50,7 @@ export default function RootLayout({ children }) {
         <a href="#main-content" className="skip-to-content">
           Skip to main content
         </a>
-        <CursorGlow />
-        <Navbar />
-        {children}
-        <Footer />
+        <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
       </body>
     </html>
   );

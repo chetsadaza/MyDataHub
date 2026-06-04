@@ -1,12 +1,9 @@
-/* ============================================
-   ContactSection Component
-   ============================================ */
-
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PERSONAL_INFO, SOCIAL_LINKS } from "@/lib/constants";
 import { sendContactMessage } from "@/lib/api";
+import { portfolioStorage } from "@/lib/portfolioStorage";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import SectionTitle from "@/components/ui/SectionTitle";
 import Card from "@/components/ui/Card";
@@ -42,11 +39,16 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_MESSAGE_LENGTH = 1000;
 
 export default function ContactSection() {
+  const [profile, setProfile] = useState(PERSONAL_INFO);
   const [ref, isVisible] = useScrollAnimation({ threshold: 0.05 });
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState({ type: "", message: "" });
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setProfile(portfolioStorage.getProfile());
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -94,6 +96,7 @@ export default function ContactSection() {
 
     try {
       await sendContactMessage(formData);
+      portfolioStorage.addInboxMessage(formData);
       setStatus({
         type: "success",
         message: "Thank you! Your message has been sent successfully. ✨",
@@ -101,12 +104,14 @@ export default function ContactSection() {
       setFormData({ name: "", email: "", message: "" });
       setErrors({});
     } catch (error) {
-      // Fallback message if backend is not running yet
+      // Save locally if backend fails
+      portfolioStorage.addInboxMessage(formData);
       setStatus({
-        type: "info",
-        message: "Message simulation: Web app collected your data. Backend integration setup will complete in Phase 2! 🚀",
+        type: "success",
+        message: "Thank you! Your message has been saved to the local admin inbox. ✨",
       });
-      console.log("Mock message save:", formData);
+      setFormData({ name: "", email: "", message: "" });
+      setErrors({});
     } finally {
       setLoading(false);
     }
@@ -138,7 +143,7 @@ export default function ContactSection() {
                 </span>
                 <div>
                   <h4 className={styles.detailTitle}>Location</h4>
-                  <p className={styles.detailText}>{PERSONAL_INFO.location}</p>
+                  <p className={styles.detailText}>{profile.location}</p>
                 </div>
               </div>
               <div className={styles.detailItem}>
@@ -147,8 +152,8 @@ export default function ContactSection() {
                 </span>
                 <div>
                   <h4 className={styles.detailTitle}>Email</h4>
-                  <a href={`mailto:${PERSONAL_INFO.email}`} className={styles.detailText}>
-                    {PERSONAL_INFO.email}
+                  <a href={`mailto:${profile.email}`} className={styles.detailText}>
+                    {profile.email}
                   </a>
                 </div>
               </div>

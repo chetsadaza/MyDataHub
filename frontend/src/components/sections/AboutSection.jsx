@@ -4,8 +4,10 @@
 
 "use client";
 
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { PERSONAL_INFO, STATS } from "@/lib/constants";
+import { portfolioStorage } from "@/lib/portfolioStorage";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { MapPin, Mail } from "lucide-react";
 import SectionTitle from "@/components/ui/SectionTitle";
@@ -22,7 +24,12 @@ const AboutScene = dynamic(
 );
 
 export default function AboutSection() {
+  const [profile, setProfile] = useState(PERSONAL_INFO);
   const [ref, isVisible] = useScrollAnimation();
+
+  useEffect(() => {
+    setProfile(portfolioStorage.getProfile());
+  }, []);
 
   return (
     <section className="section" id="about">
@@ -78,7 +85,7 @@ export default function AboutSection() {
               <span className="gradient-text">digital experiences</span>
             </h3>
 
-            <p className={styles.bio}>{PERSONAL_INFO.shortBio}</p>
+            <p className={styles.bio}>{profile.shortBio}</p>
 
             <div className={styles.details}>
               <div className={styles.detailItem}>
@@ -86,7 +93,7 @@ export default function AboutSection() {
                   <MapPin size={16} className={styles.detailIcon} /> Location
                 </span>
                 <span className={styles.detailValue}>
-                  {PERSONAL_INFO.location}
+                  {profile.location}
                 </span>
               </div>
               <div className={styles.detailItem}>
@@ -94,14 +101,18 @@ export default function AboutSection() {
                   <Mail size={16} className={styles.detailIcon} /> Email
                 </span>
                 <span className={styles.detailValue}>
-                  {PERSONAL_INFO.email}
+                  {profile.email}
                 </span>
               </div>
             </div>
 
             {/* Stats */}
             <div className={styles.stats}>
-              {STATS.map((stat) => (
+              {[
+                { label: "Years Experience", value: profile.yearsExperience || "" },
+                { label: "Projects Completed", value: profile.projectsCompleted || "" },
+                { label: "Happy Clients", value: profile.happyClients || "" }
+              ].map((stat) => (
                 <div key={stat.label} className={styles.statItem}>
                   <span className={styles.statValue}>{stat.value}</span>
                   <span className={styles.statLabel}>{stat.label}</span>

@@ -5,11 +5,12 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { ArrowRight, Send, ChevronDown } from "lucide-react";
 import { PERSONAL_INFO } from "@/lib/constants";
+import { portfolioStorage } from "@/lib/portfolioStorage";
 import Button from "@/components/ui/Button";
 import styles from "@/styles/hero.module.css";
 
@@ -24,17 +25,22 @@ const HeroScene = dynamic(
 );
 
 export default function HeroSection() {
+  const [profile, setProfile] = useState(PERSONAL_INFO);
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [titleIndex, setTitleIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
 
-  const titles = [
-    PERSONAL_INFO.title,
+  useEffect(() => {
+    setProfile(portfolioStorage.getProfile());
+  }, []);
+
+  const titles = useMemo(() => [
+    profile.title || PERSONAL_INFO.title,
     "Web Developer",
     "UI/UX Specialist",
     "Creative Thinker",
-  ];
+  ], [profile.title]);
 
   // Typing animation
   useEffect(() => {
@@ -59,7 +65,7 @@ export default function HeroSection() {
     }
 
     return () => clearTimeout(timeout);
-  }, [charIndex, isDeleting, titleIndex]);
+  }, [charIndex, isDeleting, titleIndex, titles]);
 
   // Framer Motion Variants
   const containerVariants = {
@@ -132,7 +138,7 @@ export default function HeroSection() {
 
           {/* Title */}
           <motion.h1 className={styles.title} variants={itemVariants}>
-            Hi, I&apos;m <span className={styles.name}>{PERSONAL_INFO.name}</span>
+            Hi, I&apos;m <span className={styles.name}>{profile.name}</span>
           </motion.h1>
 
           {/* Typing Animation */}
@@ -143,7 +149,7 @@ export default function HeroSection() {
 
           {/* Description */}
           <motion.p className={styles.description} variants={itemVariants}>
-            {PERSONAL_INFO.description}
+            {profile.description}
           </motion.p>
 
           {/* Actions buttons */}
