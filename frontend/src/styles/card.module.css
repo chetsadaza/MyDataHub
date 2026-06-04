@@ -1,0 +1,67 @@
+/* ============================================
+   Card Styles (CSS Module)
+   ============================================ */
+
+.card {
+  position: relative;
+  background: var(--bg-glass);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid var(--bg-glass-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  overflow: hidden;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Variants */
+.default {
+  background: var(--bg-glass);
+}
+
+.filled {
+  background: var(--bg-secondary);
+  border-color: rgba(255, 255, 255, 0.03);
+}
+
+.gradient {
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.05),
+    rgba(168, 85, 247, 0.03)
+  );
+  border-color: rgba(99, 102, 241, 0.1);
+}
+
+/* Glow */
+.glow {
+  box-shadow: var(--card-glow);
+}
+
+.card:hover {
+  border-color: rgba(99, 102, 241, 0.25);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), var(--card-glow-hover);
+}
+
+/* Border glow effect on hover */
+.borderGlow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.15),
+    rgba(168, 85, 247, 0.08),
+    transparent
+  );
+}
+
+.card:hover .borderGlow {
+  opacity: 1;
+}

@@ -1,0 +1,80 @@
+/* ============================================
+   SkillBadge Styles (CSS Module) — Chip Design
+   ============================================ */
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 0.65rem 1.1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-lg);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: fadeIn 0.5s ease forwards;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hover effects utilizing custom brand properties */
+.chip:hover {
+  transform: translateY(-4px);
+  background: rgba(var(--brand-color-rgb), 0.04);
+  border-color: rgba(var(--brand-color-rgb), 0.35);
+  box-shadow: 
+    0 10px 25px -10px rgba(var(--brand-color-rgb), 0.25),
+    0 0 15px -3px rgba(var(--brand-color-rgb), 0.15);
+}
+
+/* Glowing dot matching the brand color */
+.dot {
+  width: 8px;
+  height: 8px;
+  background: var(--brand-color);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 6px var(--brand-color);
+}
+
+.chip:hover .dot {
+  transform: scale(1.2);
+  box-shadow: 0 0 12px var(--brand-color);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.name {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.levelTag {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: color 0.3s ease;
+}
+
+.chip:hover .levelTag {
+  color: var(--brand-color);
+}
