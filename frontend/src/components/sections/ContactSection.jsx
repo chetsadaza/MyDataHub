@@ -10,6 +10,7 @@ import { sendContactMessage } from "@/lib/api";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import SectionTitle from "@/components/ui/SectionTitle";
 import Card from "@/components/ui/Card";
+import { MapPin, Mail } from "lucide-react";
 import Button from "@/components/ui/Button";
 import styles from "@/styles/contact.module.css";
 
@@ -132,14 +133,18 @@ export default function ContactSection() {
 
             <div className={styles.details}>
               <div className={styles.detailItem}>
-                <span className={styles.icon}></span>
+                <span className={styles.icon}>
+                  <MapPin size={22} />
+                </span>
                 <div>
                   <h4 className={styles.detailTitle}>Location</h4>
                   <p className={styles.detailText}>{PERSONAL_INFO.location}</p>
                 </div>
               </div>
               <div className={styles.detailItem}>
-                <span className={styles.icon}></span>
+                <span className={styles.icon}>
+                  <Mail size={22} />
+                </span>
                 <div>
                   <h4 className={styles.detailTitle}>Email</h4>
                   <a href={`mailto:${PERSONAL_INFO.email}`} className={styles.detailText}>

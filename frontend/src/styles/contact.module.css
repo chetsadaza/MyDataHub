@@ -54,7 +54,7 @@
 }
 
 .icon {
-  font-size: var(--text-xl);
+  color: var(--accent-blue);
   display: flex;
   align-items: center;
   justify-content: center;

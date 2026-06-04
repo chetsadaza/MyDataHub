@@ -7,6 +7,7 @@
 import dynamic from "next/dynamic";
 import { PERSONAL_INFO, STATS } from "@/lib/constants";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { MapPin, Mail } from "lucide-react";
 import SectionTitle from "@/components/ui/SectionTitle";
 import styles from "@/styles/about.module.css";
 
@@ -81,13 +82,17 @@ export default function AboutSection() {
 
             <div className={styles.details}>
               <div className={styles.detailItem}>
-                <span className={styles.detailLabel}> Location</span>
+                <span className={styles.detailLabel}>
+                  <MapPin size={16} className={styles.detailIcon} /> Location
+                </span>
                 <span className={styles.detailValue}>
                   {PERSONAL_INFO.location}
                 </span>
               </div>
               <div className={styles.detailItem}>
-                <span className={styles.detailLabel}> Email</span>
+                <span className={styles.detailLabel}>
+                  <Mail size={16} className={styles.detailIcon} /> Email
+                </span>
                 <span className={styles.detailValue}>
                   {PERSONAL_INFO.email}
                 </span>
